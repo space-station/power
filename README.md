@@ -1,12 +1,9 @@
-# power
-koa+mysql+redis+vue 实现权限控制
+# origin
+forked from yangfuhe/power, to implement a simple data processor util site
 
 ### 介绍
-> 此权限控制系统采用前后端分离，前端代码在front目录下，后端代码在app目录下。前端使用vue2，后端使用koa2，数据库使用mysql，用redis做session持久化。
-
->您可以在此项目的基础上轻松完成需要权限控制的后台管理系统，前后端的框架搭建以及控制权限部分的代码都已经完成，您只需要添加您的业务代码，然后把菜单，路由，请求接口在资源配置页面添加相应资源即可
-
->每个角色登录该系统后，左侧菜单由该角色被分配的权限动态生成，权限分配在角色管理页面（包括请求接口的权限）
+> koa+mysql+redis+vue 实现权限控制
+> 前端使用vue2，后端使用koa2，数据库使用mysql，用redis做session持久化。
 
 ### 快速使用
 
