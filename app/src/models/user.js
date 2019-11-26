@@ -63,8 +63,9 @@ let login = async params => {
 }
 
 let powers = async params => {
-    let menu = await db.find(`select p.* from rolePower rp left join powers p on rp.powerId = p.id where rp.roleId = ? and p.isDelete = 1 and p.type!=3 order by type,sort`, [params.id])
-    let power = await db.find(`select p.addr,p.name from rolePower rp left join powers p on rp.powerId = p.id where rp.roleId = ? and p.isDelete = 1 and p.type=3 order by sort`, [params.id])
+    let menu = await db.find(`select p.* from rolePower rp left join powers p on rp.powerId = p.id where rp.roleId = ? and p.isDelete = 1 and p.type!=3 order by type,sort`, [params.roleId])
+    let power = await db.find(`select p.addr,p.name from rolePower rp left join powers p on rp.powerId = p.id where rp.roleId = ? and p.isDelete = 1 and p.type=3 order by sort`, [params.roleId])
+    console.log("**************get menu = " + menu + " power = " + power.roleId);
     return { menu, power }
 }
 
