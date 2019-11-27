@@ -58,6 +58,8 @@ let modifyPwd = async params => {
 }
 
 let login = async params => {
+    console.log("enter in func login in models username: "
+     + params.userName + " psd : " + params.password)
     return await db.findOne(`select id,roleId,userName,realName,forbidden from users 
     where userName = ? and password = ? and isDelete = 1 limit 1`, [params.userName, params.password])
 }

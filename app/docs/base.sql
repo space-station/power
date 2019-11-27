@@ -67,7 +67,7 @@ CREATE TABLE `powers` (
   `isDelete` int(2) NOT NULL DEFAULT '1' COMMENT '1正常，2删除',
   `createTime` bigint(13) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2521 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2530 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,6 +99,7 @@ INSERT INTO `powers` VALUES (2498,0,'系统管理','el-icon-setting',1,1,'',1,''
 (2519,2498,'系统日志','',0,2,'system/log',1,'',1, 1566289004598),
 (2520,2519,'查询日志列表','',0,3,'log/list',1,'',1,1566289027462),
 (2521,2498,'文件系统','',0,2,'system/fileSystem',1,'',1,1566289034598);
+/*!(2522,2521,'文件显示','',0,3,'fileSystem/show',1,'',1,1566289057462);*/
 /*!40000 ALTER TABLE `powers` ENABLE KEYS */;
 UNLOCK TABLES;
 

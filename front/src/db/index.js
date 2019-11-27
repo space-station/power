@@ -102,5 +102,13 @@ db.create('personal', {
     }
 })
 
+//文件系统
+db.create('fileSystem', {
+    parse: {
+        url: '/fileSystem/parse',
+        method: 'get',
+    }    
+})
+
 
 global.db = db;
