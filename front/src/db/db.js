@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
+import { copyFile } from 'fs';
 const urlPrefix = "/manage"
 export default new class {
     create(name, methods) {
@@ -7,6 +8,7 @@ export default new class {
     }
     DB(name, methods) {
         for (let method in methods) {
+            console.log("method: " + method + " name: " + name);
             const config = methods[method];
             if (!this[name]) this[name] = {};
             this[name][method] = params => new Request(config, params);
@@ -19,10 +21,14 @@ function Request(config, params) {
         method: config.method,
         url: urlPrefix + config.url
     }
+    console.log("enter in Request method: " + cfg.method + " url : " + cfg.url);
+    console.log("enter in Request params: " + params);
     if (config.method == "post") cfg.data = params
     else cfg.params = params
     return new Promise((resolve, reject) => {
+        console.log("11111111111111111111111111111111111111111");
         axios(cfg).then(res => {
+            console.log("222222222222222222222222222222222222222");
             if (res.data.errMsg) {
                 let hash = location.hash;
                 if (!((hash == '#/login' || hash == '#/') && res.data.notLogged)) {

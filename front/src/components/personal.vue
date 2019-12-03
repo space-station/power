@@ -5,6 +5,11 @@
                 <span class="label" >用户名</span>：
                 <span class="value">{{userInfo.userName}}</span> 
             </div>
+          <p>这个文件执行结果是：{{test}}</p>
+            <div class="item">
+                <span class="label" >这结果是：</span>：
+                <span class="value">{{test}}</span> 
+            </div>
             <div class="item">
                 <span class="label" >姓名</span>：
                 <span class="value">{{userInfo.realName}}</span> 
@@ -50,6 +55,7 @@
 export default {
   data () {
     return {
+      test:'123qwe',
       userInfo:{},
       loginInfo:{},
       treeData:[],
@@ -65,6 +71,7 @@ export default {
           db.personal.info().then(info=>{
               this.userInfo = info.userInfo;
               this.loginInfo = info.loginInfo;
+              //this.test = "qwrwryeturty"
               let treeData = [];
               for(let l of info.powerInfo){
                   if(l.type==1){

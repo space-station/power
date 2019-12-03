@@ -55,14 +55,18 @@
       }
     },
     created(){
+      console.log("enter in func create")
       this.getSession();
     },
     methods:{
       getSession(){
+        console.log("enter in getsession")
         db.user.session().then(res=>{
           this.user = res.user;
           let arr = [];
+          console.log("user = " + res.user + " menu : " + res.menu.size)
           for(let m of res.menu){
+            console.log("m.type = " + m.type)
             if(m.type==1){
               arr.push({
                 children:[],

@@ -106,8 +106,12 @@ db.create('personal', {
 db.create('fileSystem', {
     parse: {
         url: '/fileSystem/parse',
-        method: 'get',
-    }    
+        method: 'post',
+    },   
+    getFileSystem: {
+        url: '/fileSystem/getFileSystem',
+        method: 'post',
+    }
 })
 
 

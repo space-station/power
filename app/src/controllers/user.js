@@ -25,7 +25,9 @@ let modifyPwd = async ctx => {
 }
 
 let login = async ctx => {
+    console.log("enter in func login in controllers");
     let user = await userModel.login(ctx.request.body);
+    console.log("get the user :" + user);
     if (!user) {
         ctx.body = { errMsg: "用户名或密码输入有误" }
     } else if (user.forbidden == 2) {
