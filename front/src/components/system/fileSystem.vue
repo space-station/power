@@ -1,107 +1,39 @@
 <template>
 　<div id="app">
-
-  <div class="block">
-    <p>使用 scoped slot</p>
-    
-    <el-tree
-      :data="data5"
-      node-key="id"
-      default-expand-all
-      @node-click = "doOnClick"
-       @node-expand="treeExpand"
-      :expand-on-click-node="false">
-      <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ node.label }}</span>
-        <span>
-          <el-button
-            type="text"
-            size="mini"
-            @click="() => showAppendNodeDialog(data)">
-            <i class="el-icon-circle-plus"></i>
-          </el-button>
-          <el-button
-            type="text"
-            size="mini"
-            @click="() => remove(node, data)">
-            <i class="el-icon-delete-solid"></i>
-          </el-button>
-        </span>
-      </span>
-    </el-tree>
-    <el-dialog
-            title="添加节点"
-            :visible.sync="appendNodeDialogVisible"
-            width="600px"
-            centerjsontree
-           >
-           <el-form :model="appendNode" label-width="100px">               
-                <el-form-item label="节点名称">
-                 <el-input v-model="appendNode.name"></el-input>
-                </el-form-item>                
-           </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="appendNodeDialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="doAppend(data)">确 定</el-button>
-            </span>
-       </el-dialog>
+    <el-container style="height: 520px;  overflow-y: scroll;">
+        <el-tree
+        :data="treeNode"
+        node-key="id"
+        default-expand-all
+        @node-click = "doOnClick"
+        @node-expand="treeExpand"
+        :expand-on-click-node="false">      
+        </el-tree>
+    </el-container>
+    <el-container style="height: 300px; border: 1px solid #eee; overflow-y: scroll; ">
+        <p>文件解析结果：<br>
+         <ol>
+            <li v-for="f in files">
+            {{ f }}
+            </li>
+        </ol>
+        </p>
+    </el-container>
   </div>
-  　<el-button type="primary" @click="executeFile">运行文件</el-button>
-
-    <p>这个文件执行结果是：<br>{{response}} </p>
-　</div>
 </template>
 <script>
     let id = 1000;
     export default {
-        data () {
-            const data = [{
-                id: 1,
-                label: '一级 1',
-                children: [{
-                id: 4,
-                label: '二级 1-1',
-                children: [{
-                    id: 9,
-                    label: '三级 1-1-1'
-                }, {
-                    id: 10,
-                    label: '三级 1-1-2'
-                }]
-                }]
-            }, {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                id: 5,
-                label: '二级 2-1'
-                }, {
-                id: 6,
-                label: '二级 2-2'
-                }]
-            }, {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                id: 7,
-                label: '二级 3-1'
-                }, {
-                id: 8,
-                label: '二级 3-2'
-                }]
-            }];
+    data () {            
       return {
-        data4: JSON.parse(JSON.stringify(data)),
-        data5: data,
+        treeNode: [],
         appendNodeDialogVisible : false,
         appendNode:{},
         treeData:{},
+        files:[],
         response:'',
         defaultProps:{children: 'children',label: 'name'}
         }
-   
-                
-            
     },
     created(){
         this.queryInfo();
@@ -113,7 +45,7 @@
              db.fileSystem.parse().then(response=>{
                  console.log(response);
                 this.response = response
-                console.log(response.body);
+                
                 _this.$message({
                     type: 'success',
                     message: "successful",
@@ -150,20 +82,10 @@
                 var _this=this;
                 db.fileSystem.parse({"pwd":path}).then(response=>{
                     console.log(response);
-                    this.response = response
-                    console.log(response.body);
-                    _this.$message({
-                        type: 'success',
-                        message: "successful",
-                        duration:5000,
-                        showClose: true
-                    });  
+                    this.files = response.split('\n');
                 }).catch(err=>{
-                    _this.$message({
-                    type: 'error',
-                    message: err,
-                    showClose: true
-                    });
+                    console.log("response failed!");
+                    this.response='';                    
                 })
             }
         },
@@ -171,11 +93,7 @@
             console.log("enter in func executeFile")
             var _this=this;
              db.fileSystem.getFileSystem().then(response=>{
-                 console.log("***************************************************");
-                 console.log(JSON.parse(JSON.stringify(this.data5)));
-                console.log(JSON.parse(JSON.stringify(response)));
-                 console.log("****************************************************");
-                this.data5 = response;
+                this.treeNode = response;
                 console.log("body: " + response);
                 _this.$message({
                     type: 'success',
@@ -199,7 +117,7 @@
         },
         showAppendNodeDialog(data){
             console.log("enter in func showAppendNodeDialog");
-            console.log(this.data5);
+            console.log(this.treeNode);
             console.log(data);
             this.appendNodeDialogVisible = true;
             this.treeData = {...data};
@@ -212,15 +130,14 @@
             this.appendNodeDialogVisible = false;
             console.log("enter in func doAppend name: " + this.appendNode.name);
             const newChild = { id: id++, label: this.appendNode.name, children: [] };
-                       console.log(this.data5);
+                       console.log(this.treeNode);
                        console.log(treeData);
             if (!this.treeData.children) {
             this.$set(this.treeData, 'children', []);
             }
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + this.treeData.children);
             this.treeData.children.push(newChild);
-            this.data5 = treeData;
-            console.log(this.data5);
+            this.treeNode = treeData;
+            console.log(this.treeNode);
         },
 
         remove(node, data) {

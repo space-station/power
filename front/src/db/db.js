@@ -26,9 +26,7 @@ function Request(config, params) {
     if (config.method == "post") cfg.data = params
     else cfg.params = params
     return new Promise((resolve, reject) => {
-        console.log("11111111111111111111111111111111111111111");
         axios(cfg).then(res => {
-            console.log("222222222222222222222222222222222222222");
             if (res.data.errMsg) {
                 let hash = location.hash;
                 if (!((hash == '#/login' || hash == '#/') && res.data.notLogged)) {
@@ -52,6 +50,10 @@ function Request(config, params) {
             } else {
                 resolve(res.data)
             }
+        } ).catch (res =>{
+            console.log(" enter in catch " );
+        }).finally(res =>{
+            console.log("enter in finally" );
         })
     })
 }

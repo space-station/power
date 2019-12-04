@@ -14,26 +14,35 @@ function doShellCmd(param){
     //let str=cmd;
     let result={};
     return new Promise(function(resolve,reject){
-        console.log("******************enter in route doShellcmd func");
+        var str = param.split('.');
+        
+        console.log(str + " len: " + str.length);
         var exePath = path.resolve(__dirname, param);
         console.log("exePath = " + exePath + " _dirname = " + __dirname);
-        process.execFile(exePath,null,null,function (err, stdout, stderr) {
-
-            console.log('execFile', stdout, err);
-            callback(err, stdout, stderr);
-            if(err){
-                console.log('err');
-                result.errCode=500;
-                result.data="操作失败！请重试";
-                reject(result);
-            }else{
-                console.log('stdout ',stdout);//标准输出
-                result.errCode=200;
-                result.data=stdout;
-                resolve(result);
-            }
-        
-        });
+        if (str[str.length-1] == "sh" || str[str.length-1] == "py"){
+            console.log("this is a exe file !");
+            process.execFile(exePath,null,null,function (err, stdout, stderr) {
+                console.log('execFile', stdout, err);
+                callback(err, stdout, stderr);
+                if(err){
+                    console.log('err');
+                    result.errCode=500;
+                    result.data="操作失败！请重试";
+                    reject(result);
+                }else{
+                    console.log('stdout ',stdout);//标准输出
+                    result.errCode=200;
+                    result.data=stdout;
+                    resolve(result);
+                }
+            
+            });
+        } else {
+            console.log('err');
+            result.errCode=200;
+            result.data="文件格式不正确，请确认！";
+            resolve(result);
+        }
        /*! process.exec(str,function(err,stdout,stderr){
             if(err){
                 console.log('err');
@@ -82,7 +91,6 @@ function getIndexOfPathByDeep(obj, dir, curDir) {
     //console.log("dir = " + dir);
     let curPath = path.join(dir, curDir);
     let tmp = {};
-   // console.log("*****************id = " + id);
     // 达到搜索深度，停止
    // if(deep) {
         tmp["id"] = id;
@@ -108,7 +116,7 @@ function getIndexOfPathByDeep(obj, dir, curDir) {
 
 //加URL
 router.post('/fileSystem/parse', async ctx => {
-    console.log("***********************enter in routes");
+    console.log("enter in routes");
     console.log(ctx.request.body);
     var param = ctx.request.body;
     
@@ -122,13 +130,13 @@ router.post('/fileSystem/parse', async ctx => {
 });
 
 router.post('/fileSystem/getFileSystem', async ctx => {
-    console.log("***********************enter in routes");
     let result=await getIndexByPath("/bin1");//调用exec
     //getIndexByPath("/others"); 
     console.log("[restartServer] ",result.data);
     ctx.response.status=result.errCode;
     ctx.response.body=result.data;
-    console.log("*****[restartServer] ",ctx.response);
+    ctx.response.err="aaaaaaaa"
+    console.log("[restartServer] ",ctx.response);
     //console.log(result);
    // return result;
 });
